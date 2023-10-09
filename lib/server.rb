@@ -1,7 +1,7 @@
 require "socket"
 require "logger"
-require_relative "lib/response"
-require_relative "lib/request"
+require_relative "response"
+require_relative "request"
 
 class Server
   attr_reader :port, :logger

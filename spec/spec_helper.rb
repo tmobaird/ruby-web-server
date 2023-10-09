@@ -1,4 +1,4 @@
-require_relative "../server"
+require_relative "../lib/server"
 require "httparty"
 @thread = nil
 
