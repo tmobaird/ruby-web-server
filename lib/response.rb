@@ -19,28 +19,46 @@ class Response
   end
 
   class << self
-    def prepare(request)
+    def prepare(request, router)
       if request.path == "/"
-        Response.respond_with(SERVER_ROOT + "index.html")
+        Response.respond_with_file(SERVER_ROOT + "index.html")
+      elsif request.path.include?(".")
+        Response.respond_with_file(SERVER_ROOT + request.path)
       else
-        Response.respond_with(SERVER_ROOT + request.path)
+        begin
+          Response.respond_with_data(router.call(request.path))
+        rescue => exception
+          Response.send_internal_error(exception)
+        end
       end
     end
 
-    def respond_with(path)
+    def respond_with_file(path)
       if File.exist?(path)
-        Response.send_ok_response(File.binread(path))
+        Response.send_ok(File.binread(path))
       else
-        Response.send_file_not_found
+        Response.send_not_found
       end
     end
 
-    def send_ok_response(data)
+    def respond_with_data(data)
+      if data.nil?
+        Response.send_not_found
+      else
+        Response.send_ok(data.to_s)
+      end
+    end
+
+    def send_ok(data)
       Response.new(code: 200, data: data)
     end
 
-    def send_file_not_found
+    def send_not_found
       Response.new(code: 404)
+    end
+
+    def send_internal_error(exception)
+      Response.new(code: 500, data: exception.message)
     end
   end
 end

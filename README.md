@@ -2,7 +2,7 @@
 
 - [x] Testing
 - [x] Have multiple endpoints
-- [ ] Add endpoints that dont map to a file (routes concept)
+- [x] Add endpoints that dont map to a file (routes concept)
 - [ ] Mime types (diff content per Accept and Content-Type)
 - [ ] Data compression (gzipping)
 - [ ] Access control (basic auth, api key, etc)

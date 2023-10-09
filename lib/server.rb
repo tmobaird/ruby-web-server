@@ -1,7 +1,10 @@
 require "socket"
 require "logger"
+require "active_support/all"
 require_relative "response"
 require_relative "request"
+require_relative "router"
+require_relative "routes"
 
 class Server
   attr_reader :port, :logger
@@ -11,6 +14,7 @@ class Server
     @server = TCPServer.new("localhost", 8080)
     @logger = logger
     @run = true
+    @router = Router.new(Routes::DATA)
   end
 
   def start
@@ -20,7 +24,7 @@ class Server
       request_data = client.readpartial(2048)
 
       request = Request.parse(request_data)
-      response = Response.prepare(request)
+      response = Response.prepare(request, @router)
 
       logger.info "#{client.peeraddr[3]} #{request.path} - #{response.code}"
 

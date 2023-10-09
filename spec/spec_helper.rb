@@ -1,4 +1,8 @@
 require_relative "../lib/server"
+require_relative "../lib/router"
+require_relative "../lib/request"
+require_relative "../lib/response"
+require_relative "../lib/routes"
 require "httparty"
 @thread = nil
 
