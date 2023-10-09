@@ -1,0 +1,20 @@
+[
+    {
+        "id": 1,
+        "title": "Fellowship of the Ring",
+        "author": "J.R.R. Tolkien",
+        "description": "The first book in the Lord of the Rings trilogy"
+    },
+    {
+        "id": 2,
+        "title": "The Two Towers",
+        "author": "J.R.R. Tolkien",
+        "description": "The second book in the Lord of the Rings trilogy"
+    },
+    {
+        "id": 3,
+        "title": "Return of the King",
+        "author": "J.R.R. Tolkien",
+        "description": "The third book in the Lord of the Rings trilogy"
+    }
+]

@@ -1,14 +1,16 @@
 require "pry"
 
 class Response
+  SERVER_ROOT = "tmp/web-server/"
+
   attr_reader :code
 
   def initialize(code:, data: "")
     @response =
-    "HTTP/1.1 #{code}\r\n" +
-    "Content-Length: #{data.size}\r\n" +
-    "\r\n" +
-    "#{data}\r\n"
+      "HTTP/1.1 #{code}\r\n" +
+      "Content-Length: #{data.size}\r\n" +
+      "\r\n" +
+      "#{data}\r\n"
     @code = code
   end
 
@@ -17,6 +19,14 @@ class Response
   end
 
   class << self
+    def prepare(request)
+      if request.path == "/"
+        Response.respond_with(SERVER_ROOT + "index.html")
+      else
+        Response.respond_with(SERVER_ROOT + request.path)
+      end
+    end
+
     def respond_with(path)
       if File.exist?(path)
         Response.send_ok_response(File.binread(path))

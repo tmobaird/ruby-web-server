@@ -1,7 +1,8 @@
 ### Roadmap
 
+- [ ] Testing
 - [ ] Have multiple endpoints
-- [ ] Prevent using file path
+- [ ] Have no file path endpoints (routes concept)
 - [ ] Mime types (diff content per Accept and Content-Type)
 - [ ] Data compression (gzipping)
 - [ ] Access control (basic auth, api key, etc)
