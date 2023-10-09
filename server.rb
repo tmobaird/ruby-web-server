@@ -1,19 +1,31 @@
 require "socket"
+require "logger"
 require_relative "lib/response"
 require_relative "lib/request"
 
-server = TCPServer.new("localhost", 8080)
-puts "Server running at http://localhost:8080"
+class Server
+  attr_reader :port, :logger
 
-loop do
-  client = server.accept
-  request_data = client.readpartial(2048)
+  def initialize(port = 8080, logger = Logger.new($stdout))
+    @port = port
+    @server = TCPServer.new("localhost", 8080)
+    @logger = logger
+    @run = true
+  end
 
-  request = Request.parse(request_data)
-  response = Response.prepare(request)
+  def start
+    logger.info "Server running at http://localhost:8080"
+    while @run
+      client = @server.accept
+      request_data = client.readpartial(2048)
 
-  puts "#{client.peeraddr[3]} #{request.path} - #{response.code}"
+      request = Request.parse(request_data)
+      response = Response.prepare(request)
 
-  response.send(client)
-  client.close
+      logger.info "#{client.peeraddr[3]} #{request.path} - #{response.code}"
+
+      response.send(client)
+      client.close
+    end
+  end
 end
