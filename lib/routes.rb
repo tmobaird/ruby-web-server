@@ -1,10 +1,7 @@
 module Routes
   DATA = {
-    "/posts" => proc do |request|
-                  {
-                    "message" => "Hello World"
-                  }.to_json
-                end,
+    "/posts" => "posts",
+    "/comments" => "comments",
     "/test_exception" => proc do |request|
                            raise "Test Exception"
                          end

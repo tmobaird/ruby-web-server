@@ -1,3 +1,4 @@
+require_relative "mime_typer"
 require "pry"
 
 class Response
@@ -5,11 +6,12 @@ class Response
 
   attr_reader :code
 
-  def initialize(code:, data: "")
+  def initialize(code:, data: "", headers: {})
     @response =
       "HTTP/1.1 #{code}\r\n" +
-      "Content-Length: #{data.size}\r\n" +
-      "\r\n" +
+      "Content-Length: #{data.bytesize + 2}\r\n" +
+      headers.map { |k, v| "#{k}: #{v}" }.join("\r\n") +
+      ("\r\n" * 2) +
       "#{data}\r\n"
     @code = code
   end
@@ -26,39 +28,46 @@ class Response
         Response.respond_with_file(SERVER_ROOT + request.path)
       else
         begin
-          Response.respond_with_data(router.call(request.path))
+
+          Response.respond_with_data(router.call(request.path, request))
         rescue => exception
-          Response.send_internal_error(exception)
+          send_internal_error(exception.message)
         end
       end
     end
 
     def respond_with_file(path)
+      content_type = MimeTyper.detect_from_file(path)
+
       if File.exist?(path)
-        Response.send_ok(File.binread(path))
+        send_ok(File.binread(path), "Content-Type": content_type)
       else
-        Response.send_not_found
+        send_not_found
       end
     end
 
     def respond_with_data(data)
       if data.nil?
-        Response.send_not_found
+        send_not_found
       else
-        Response.send_ok(data.to_s)
+        send_ok(data[:body], data[:headers])
       end
     end
 
-    def send_ok(data)
-      Response.new(code: 200, data: data)
+    def send_internal_error(data = "", headers = {})
+      Response.new(data: data, code: 500, headers: headers)
     end
 
-    def send_not_found
-      Response.new(code: 404)
+    def send_not_found(data = "", headers = {})
+      Response.new(data: data, code: 404, headers: headers)
     end
 
-    def send_internal_error(exception)
-      Response.new(code: 500, data: exception.message)
+    def send_ok(data, headers = {})
+      Response.new(data: data, code: 200, headers: headers)
+    end
+
+    def send(code, data, headers = {})
+      Response.new(data: data, code: code, headers: headers)
     end
   end
 end

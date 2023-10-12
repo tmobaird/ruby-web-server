@@ -17,7 +17,6 @@ RSpec.configure do |config|
 
   config.shared_context_metadata_behavior = :apply_to_host_groups
   config.warnings = true
-  config.profile_examples = 10
   config.order = :random
 
   config.before(:suite) do

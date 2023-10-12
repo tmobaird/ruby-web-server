@@ -4,6 +4,7 @@ require "active_support/all"
 require_relative "response"
 require_relative "request"
 require_relative "router"
+require_relative "action"
 require_relative "routes"
 
 class Server

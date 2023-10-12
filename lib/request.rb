@@ -1,5 +1,5 @@
 class Request
-  attr_reader :method, :path, :version
+  attr_reader :method, :path, :version, :headers
 
   def initialize(method, path, version, headers, body)
     @method = method

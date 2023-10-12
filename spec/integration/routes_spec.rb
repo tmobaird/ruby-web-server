@@ -21,4 +21,18 @@ RSpec.describe "Routes" do
 
     expect(response.code).to eq(500)
   end
+
+  it "returns header data when specified" do
+    response = HTTParty.get("http://localhost:8080/posts")
+
+    headers = response.headers
+    expect(headers["Content-Type"]).to eq("application/json")
+  end
+
+  it "returns plaintext data cause it can perform logic on Accept header" do
+    response = HTTParty.get("http://localhost:8080/comments", headers: {"Accept" => "text/html"})
+
+    expect(response.code).to eq(200)
+    expect(response.body).to include("I dont have anything for you")
+  end
 end
