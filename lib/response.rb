@@ -28,7 +28,6 @@ class Response
         Response.respond_with_file(SERVER_ROOT + request.path)
       else
         begin
-
           Response.respond_with_data(router.call(request.path, request))
         rescue => exception
           send_internal_error(exception.message)

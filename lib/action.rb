@@ -35,4 +35,30 @@ class Action
       }
     end
   end
+
+  def params
+    {
+      body: @request.query.to_json,
+      headers: {
+        "Content-Type": "application/json"
+      }
+    }
+  end
+
+  def sorted_posts
+    posts = [
+      {id: 1, body: "This is a comment"},
+      {id: 2, body: "This is comment_two"}
+    ]
+    if @request.query["direction"] == "desc"
+      posts.sort! { |a, b| b[:id] <=> a[:id] }
+    end
+
+    {
+      body: posts.to_json,
+      headers: {
+        "Content-Type": "application/json"
+      }
+    }
+  end
 end

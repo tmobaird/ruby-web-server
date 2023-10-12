@@ -1,17 +1,19 @@
 class Request
-  attr_reader :method, :path, :version, :headers
+  attr_reader :method, :path, :version, :headers, :query
 
-  def initialize(method, path, version, headers, body)
+  def initialize(method, path, version, headers, body, query)
     @method = method
     @path = path
     @version = version
     @headers = headers
     @body = body
+    @query = query
   end
 
   def self.parse(request)
-    method, path, version = request.lines[0].split
-    Request.new(method, path, version, parse_headers(request), {})
+    method, fullpath, version = request.lines[0].split
+    path = fullpath.split("?").first
+    Request.new(method, path, version, parse_headers(request), {}, parse_query_params(fullpath))
   end
 
   def self.parse_headers(request)
@@ -24,5 +26,19 @@ class Request
     end
 
     headers
+  end
+
+  def self.parse_query_params(path)
+    params = {}
+    if path.include?("?")
+      query_string = path.split("?").last
+      query_string.split("&").each do |kv|
+        keypair = kv.split("=")
+        if keypair.length == 2
+          params[keypair.first] = keypair.last
+        end
+      end
+    end
+    params
   end
 end
