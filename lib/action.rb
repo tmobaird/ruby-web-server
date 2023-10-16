@@ -61,4 +61,13 @@ class Action
       }
     }
   end
+
+  def with_body
+    {
+      body: @request.body.to_json,
+      headers: {
+        "Content-Type": "application/json"
+      }
+    }
+  end
 end
