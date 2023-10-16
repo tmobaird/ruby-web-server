@@ -1,5 +1,5 @@
 class Request
-  attr_reader :method, :path, :version, :headers, :query
+  attr_reader :method, :path, :version, :headers, :body, :query
 
   def initialize(method, path, version, headers, body, query)
     @method = method
@@ -13,7 +13,8 @@ class Request
   def self.parse(request)
     method, fullpath, version = request.lines[0].split
     path = fullpath.split("?").first
-    Request.new(method, path, version, parse_headers(request), {}, parse_query_params(fullpath))
+    headers = parse_headers(request)
+    Request.new(method, path, version, headers, BodyParser.new(request, headers).parse, parse_query_params(fullpath))
   end
 
   def self.parse_headers(request)
@@ -42,3 +43,5 @@ class Request
     params
   end
 end
+
+require_relative "request/body_parser"

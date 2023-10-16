@@ -14,14 +14,14 @@ class Server
     @port = port
     @server = TCPServer.new("localhost", 8080)
     @logger = logger
-    @run = true
     @router = Router.new(Routes::DATA)
   end
 
   def start
     logger.info "Server running at http://localhost:8080"
-    while @run
+    loop do
       client = @server.accept
+      sleep 0.01 # not sure why this is needed but prevent occasional failures
       request_data = client.readpartial(2048)
 
       request = Request.parse(request_data)

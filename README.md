@@ -7,9 +7,13 @@
     - [x] including the right Content-Type header in response
     - [x] router is aware of Accept header in case route wants to return different mime types
 - [x] Query string parsing (posts?name=test and filter results)
-- [ ] POST body parsing
-    - [ ] router is aware of Content-Type header in POST/PUT request
+- [x] POST body parsing
+    - [x] router is aware of Content-Type header in POST/PUT request
+    - [x] Other content types to support
+        - [x] application/x-www-form-urlencoded
+        - [x] multipart/form-data
 - [ ] Every REST action type (GET, POST, PUT, DELETE, PATCH)
+    - [ ] Requests with the same path but different method
 - [ ] Access control (basic auth, api key, etc)
 - [ ] Multi-threading (taking multiple requests at a time)
 - [ ] Data compression (gzipping)
