@@ -1,13 +1,15 @@
 class Request
   attr_reader :method, :path, :version, :headers, :body, :query
+  attr_accessor :params
 
-  def initialize(method, path, version, headers, body, query)
+  def initialize(method, path, version, headers, body, query, params = {})
     @method = method
     @path = path
     @version = version
     @headers = headers
     @body = body
     @query = query
+    @params = params
   end
 
   def self.parse(request)

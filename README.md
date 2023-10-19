@@ -12,8 +12,8 @@
     - [x] Other content types to support
         - [x] application/x-www-form-urlencoded
         - [x] multipart/form-data
-- [ ] Every REST action type (GET, POST, PUT, DELETE, PATCH)
-    - [ ] Requests with the same path but different method
+- [x] Every REST action type (GET, POST, PUT, DELETE, PATCH)
+    - [x] Requests with the same path but different method
 - [ ] Access control (basic auth, api key, etc)
 - [ ] Multi-threading (taking multiple requests at a time)
 - [ ] Data compression (gzipping)

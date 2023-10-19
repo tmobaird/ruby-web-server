@@ -1,4 +1,5 @@
 require_relative "mime_typer"
+require_relative "exceptions"
 require "pry"
 
 class Response
@@ -29,7 +30,12 @@ class Response
       else
         begin
           Response.respond_with_data(router.call(request.path, request))
+        rescue Exceptions::RouteNotFoundError => exception
+          # 404
+          send_not_found(exception.message)
         rescue => exception
+          # 500
+          puts exception.backtrace
           send_internal_error(exception.message)
         end
       end
@@ -46,8 +52,8 @@ class Response
     end
 
     def respond_with_data(data)
-      if data.nil?
-        send_not_found
+      if data[:status]
+        send(data[:status], data[:body], data[:headers])
       else
         send_ok(data[:body], data[:headers])
       end

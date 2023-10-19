@@ -14,6 +14,28 @@ class Action
     }
   end
 
+  def create_post
+    {
+      body: "POST create post - title: #{@request.body["title"]}!",
+      headers: {},
+      status: 201
+    }
+  end
+
+  def get_post
+    {
+      body: "GET post ##{@request.params["id"]}!",
+      headers: {}
+    }
+  end
+
+  def update_post
+    {
+      body: "PUT update post ##{@request.params["id"]} - title: #{@request.body["title"]}!",
+      headers: {}
+    }
+  end
+
   def comments
     if @request.headers["Accept"] == "application/json"
       {
